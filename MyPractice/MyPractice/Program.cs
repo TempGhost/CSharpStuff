@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using MyPractice.Code;
 
 
 namespace MyPractice
@@ -27,29 +28,28 @@ namespace MyPractice
         }
         private delegate string GetAString();
 
-        delegate double DoubleOp(double value); 
-          static void Main(string[] args)
-          {
-             
-              Func<double, double>[] DoubleOpWhitT = {MathOperations.MultiplyByTwo, MathOperations.Square};
+        delegate double DoubleOp(double value);
 
-                     DoubleOp[] operations = {MathOperations.MultiplyByTwo , MathOperations.Square};
-              string c = "fuck";
-              int Fuckint = 0 ;
-              int Fuck2= 0;
+        static void Main(string[] args)
+        {
+            //Func<double, double>[] DoubleOpWhitT = {MathOperations.MultiplyByTwo, MathOperations.Square};
 
-
-              Func<int, int, int> fuck = (p1, p2) => { return p1 + p2; }
-                  ;
-              for (int i = 0; i < DoubleOpWhitT.Length; i++)
-              {
-                  Console.WriteLine("Using opeartions[{0}]", i);
-                  ProcessAndDisplayNuimber(DoubleOpWhitT[i], 5.0);
-              }
-              Console.ReadLine();
-
-
-          }
+            //DoubleOp[] operations = {MathOperations.MultiplyByTwo, MathOperations.Square};
+            //string c = "fuck";
+            //int Fuckint = 0;
+            //int Fuck2 = 0;
+            //Func<int, int, int> fuck = (p1, p2) => { return p1 + p2; }
+            //    ;
+            //for (int i = 0; i < DoubleOpWhitT.Length; i++)
+            //{
+            //    Console.WriteLine("Using opeartions[{0}]", i);
+            //    ProcessAndDisplayNuimber(DoubleOpWhitT[i], 5.0);
+            //}
+            //Console.ReadLine(); 
+            RegularExpressionsPractice.TestRegulare();
+            Console.WriteLine("Done!");
+            Console.ReadLine();
+        }
 
          
 
