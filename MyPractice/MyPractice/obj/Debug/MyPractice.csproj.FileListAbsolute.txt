@@ -1,0 +1,6 @@
+c:\users\okikg_000\documents\visual studio 2015\Projects\MyPractice\MyPractice\bin\Debug\MyPractice.exe.config
+c:\users\okikg_000\documents\visual studio 2015\Projects\MyPractice\MyPractice\obj\Debug\MyPractice.csprojResolveAssemblyReference.cache
+c:\users\okikg_000\documents\visual studio 2015\Projects\MyPractice\MyPractice\bin\Debug\MyPractice.exe
+c:\users\okikg_000\documents\visual studio 2015\Projects\MyPractice\MyPractice\bin\Debug\MyPractice.pdb
+c:\users\okikg_000\documents\visual studio 2015\Projects\MyPractice\MyPractice\obj\Debug\MyPractice.exe
+c:\users\okikg_000\documents\visual studio 2015\Projects\MyPractice\MyPractice\obj\Debug\MyPractice.pdb
