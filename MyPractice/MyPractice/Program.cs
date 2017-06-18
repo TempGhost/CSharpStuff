@@ -24,16 +24,13 @@ namespace MyPractice
             {
                 return value * value;
             }
-
-
         }
         private delegate string GetAString();
 
         delegate double DoubleOp(double value); 
           static void Main(string[] args)
           {
-
-
+             
               Func<double, double>[] DoubleOpWhitT = {MathOperations.MultiplyByTwo, MathOperations.Square};
 
                      DoubleOp[] operations = {MathOperations.MultiplyByTwo , MathOperations.Square};
@@ -42,50 +39,39 @@ namespace MyPractice
               int Fuck2= 0;
 
 
-            Func<int,int,int> fuck = (p1, p2) =>
-              {
-                  return p1 + p2;}
-              ;
+              Func<int, int, int> fuck = (p1, p2) => { return p1 + p2; }
+                  ;
               for (int i = 0; i < DoubleOpWhitT.Length; i++)
-              { 
-                 Console.WriteLine("Using opeartions[{0}]",i);
-                ProcessAndDisplayNuimber(DoubleOpWhitT[i],5.0);
-            
+              {
+                  Console.WriteLine("Using opeartions[{0}]", i);
+                  ProcessAndDisplayNuimber(DoubleOpWhitT[i], 5.0);
               }
               Console.ReadLine();
-              //int x = 40;
-              //GetAString FuckDelegate =  new GetAString(x.ToString);
-              //GetAString firstStringMethod = x.ToString;
-              //Console.WriteLine("String is {0}",FuckDelegate());
-              //Currency Balance = new Currency(34,50);
-              // FuckDelegate = Balance.ToString;
-              //Console.WriteLine("String is {0}", FuckDelegate());
-              //FuckDelegate = new GetAString(Currency.GetCurrencyUint);
-              //Console.WriteLine("String is {0}",FuckDelegate());
-              //Console.ReadLine();
 
 
           }
 
+         
 
+         
         class BubbleSorter {
             public static void Sort<T>(IList<T> SortArray, Func<T, T, bool> comparison)
             {
                 bool swapped = true;
                 do
-                {
-                    swapped = false;
+                { 
+                    swapped = false; 
+                    
                     ;
-                    for (int i = 0; i < SortArray.Count-1; i++) //定义第1层循环 每次循环Count -1 次
+                    for (int i = 0; i < SortArray.Count - 1; i++) //定义第1层循环 每次循环Count -1 次
                     {
-                        if (comparison(SortArray[i+1],SortArray[i])) //比较 i+1 项 与 i 项的大小  若 i+1 比 i大 将i+1 与 i 互换
+                        if (comparison(SortArray[i + 1], SortArray[i])) //比较 i+1 项 与 i 项的大小  若 i+1 比 i大 将i+1 与 i 互换
                         {
                             T temp = SortArray[i];
                             SortArray[i] = SortArray[i + 1];
                             SortArray[i + 1] = temp;
-                            swapped = true; //发生互换的表示
+                            swapped = true; //发生交换， 更新状态。 
                         }
-                        
                     }
                 } while (swapped);
             }
@@ -154,8 +140,8 @@ namespace MyPractice
 
             public static string GetCurrencyUint()
             {
-                int x, y, z; 
-               
+                int x, y, z;
+
                 return "Dollar";
             }
 
