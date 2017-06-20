@@ -15,7 +15,7 @@ namespace MyPractice.Code
             List<Racer> RacerlList = new List<Racer>
             {
                 new Racer(1, "i m", "Dick", "China"),
-                new Racer(1, "i m ", "Suck", "Japen")
+                new Racer(2, "i m", "Suck", "Japen")
             };
 
             RacerlList.ForEach(CurrenRacer => {
