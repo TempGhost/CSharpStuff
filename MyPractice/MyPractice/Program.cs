@@ -46,7 +46,11 @@ namespace MyPractice
             //    ProcessAndDisplayNuimber(DoubleOpWhitT[i], 5.0);
             //}
             //Console.ReadLine(); 
-            RegularExpressionsPractice.TestRegulare();
+            int a = 1;
+
+            RacerTestProgram.TestProgram();
+
+
             Console.WriteLine("Done!");
             Console.ReadLine();
         }
@@ -141,7 +145,6 @@ namespace MyPractice
             public static string GetCurrencyUint()
             {
                 int x, y, z;
-
                 return "Dollar";
             }
 

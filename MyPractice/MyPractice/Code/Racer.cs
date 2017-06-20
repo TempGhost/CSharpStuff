@@ -7,6 +7,25 @@ using System.Threading.Tasks;
 
 namespace MyPractice.Code
 {
+
+    class RacerTestProgram
+    {
+        public static void TestProgram()
+        {
+            List<Racer> RacerlList = new List<Racer>
+            {
+                new Racer(1, "i m", "Dick", "China"),
+                new Racer(1, "i m ", "Suck", "Japen")
+            };
+
+            RacerlList.ForEach(CurrenRacer => {
+                Console.WriteLine(CurrenRacer.ToString());
+            });
+
+
+            Console.ReadLine();
+        } 
+    }
     class Racer :IComparable<Racer>,IFormattable
     {
         public Racer(int id, string firstName, string lastName, string country)  //重载构造函数
