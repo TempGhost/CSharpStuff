@@ -49,14 +49,14 @@ namespace MyPractice.Code
             FindCountryResult.ForEach(r => Console.WriteLine(r.ToString())); 
 
           FindCountryResult = RacerlList.FindAll( new Predicate<Racer>(new FindCountry("Zimbabwe").FindCountryPredicate));
-           FindCountryResult.ForEach(r => Console.WriteLine(r.ToString()));
+           FindCountryResult.ForEach(r => Console.WriteLine(r.ToString())); 
 
             Console.ReadLine();
         } 
     }
    public  class Racer :IComparable<Racer>,IFormattable
     {
-        public Racer(int id, string firstName, string lastName, string country)  //重载构造函数
+        public Racer(int id, string firstName, string lastName, string country)  //重载 构造函数
             :this(id,firstName,lastName, country, 0)
         {
         }

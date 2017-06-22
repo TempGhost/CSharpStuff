@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\Document.cs" />
+    <Compile Include="Code\DocumentManager.cs" />
+    <Compile Include="Code\ProcessDocument.cs" />
     <Compile Include="Code\Racer.cs" />
     <Compile Include="Code\RegularExpressionsPractice.cs" />
     <Compile Include="Program.cs" />
