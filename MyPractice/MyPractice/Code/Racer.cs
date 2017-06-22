@@ -1,12 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyPractice.Code
 {
+
+
+    public class FindCountry
+    {
+
+        private string Country;
+        public FindCountry(string Country)
+        {
+            this.Country = Country;
+        }
+
+        public bool FindCountryPredicate(Racer CurrRacer)
+        {
+            if (CurrRacer==null)
+            {
+               throw  new ArgumentNullException("未将对象引用到实例。");
+            }
+            return CurrRacer.Country == this.Country;
+        }
+    }  
 
     class RacerTestProgram
     {
@@ -16,17 +38,23 @@ namespace MyPractice.Code
             {
                 new Racer(1, "I m so", "Dick", "China"),
                 new Racer(2, "I m so", "Suck", "Zimbabwe")
-            };
+            };  
+
 
             RacerlList.ForEach(CurrenRacer => {
                 Console.WriteLine(CurrenRacer.ToString());
             });
 
+            List<Racer> FindCountryResult = RacerlList.FindAll(new FindCountry("Zimbabwe").FindCountryPredicate);
+            FindCountryResult.ForEach(r => Console.WriteLine(r.ToString())); 
+
+          FindCountryResult = RacerlList.FindAll( new Predicate<Racer>(new FindCountry("Zimbabwe").FindCountryPredicate));
+           FindCountryResult.ForEach(r => Console.WriteLine(r.ToString()));
 
             Console.ReadLine();
         } 
     }
-    class Racer :IComparable<Racer>,IFormattable
+   public  class Racer :IComparable<Racer>,IFormattable
     {
         public Racer(int id, string firstName, string lastName, string country)  //重载构造函数
             :this(id,firstName,lastName, country, 0)
@@ -101,4 +129,7 @@ namespace MyPractice.Code
             return compare;
         }
     }
+
+
+
 }

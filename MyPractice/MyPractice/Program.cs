@@ -105,7 +105,8 @@ namespace MyPractice
 
             public static bool CompareSalary(Employee e1, Employee e2)
             {
-                return e1.Salary < e2.Salary;}
+                return e1.Salary < e2.Salary;
+            }
              
 
         }
@@ -114,7 +115,7 @@ namespace MyPractice
             double result = action(value);
             Console.WriteLine("Value is {0},result is {1}",value,result);
         }
-
+       
         static void ProcessAndDisplayNumber(DoubleOp action, double value)
         {
             double result = action(value);
