@@ -10,7 +10,7 @@ using MyPractice.Code;
 
 namespace MyPractice
 { 
-    class Program
+    class Program1
     {
 
         class  MathOperations
