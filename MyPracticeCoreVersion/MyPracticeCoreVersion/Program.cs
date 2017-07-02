@@ -43,7 +43,7 @@ namespace MyPractice
             //for (int i = 0; i < DoubleOpWhitT.Length; i++)
             //{
             //    Console.WriteLine("Using opeartions[{0}]", i);
-            //    ProcessAndDisplayNuimber(DoubleOpWhitT[i], 5.0);
+            //    ProcessAndDisplayNuimber(Do1ubleOpWhitT[i], 5.0);
             //}
             //Console.ReadLine(); 
             int a = 1;
