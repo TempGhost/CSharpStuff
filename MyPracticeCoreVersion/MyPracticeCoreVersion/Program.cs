@@ -10,7 +10,7 @@ using MyPractice.Code;
 
 namespace MyPractice
 { 
-    class Program1
+    class Program
     {
 
         class  MathOperations
@@ -53,7 +53,7 @@ namespace MyPractice
 
             Console.WriteLine("Done!");
             Console.ReadLine();
-        }   
+        }
 
          
 
