@@ -51,7 +51,7 @@ namespace MyPractice
             RacerTestProgram.TestProgram();
 
 
-            Console.WriteLine("Don1e!");
+            Console.WriteLine("Do111n1e!");
             Console.ReadLine();
         }
 
