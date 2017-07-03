@@ -10,7 +10,7 @@ using MyPractice.Code;
 
 namespace MyPractice
 { 
-    class Program
+    class Program1
     {
 
         class  MathOperations
@@ -43,7 +43,7 @@ namespace MyPractice
             //for (int i = 0; i < DoubleOpWhitT.Length; i++)
             //{
             //    Console.WriteLine("Using opeartions[{0}]", i);
-            //    ProcessAndDisplayNuimber(Do1ubleOpWhitT[i], 5.0);
+            //    ProcessAndDisplayNuimber(DoubleOpWhitT[i], 5.0);
             //}
             //Console.ReadLine(); 
             int a = 1;
@@ -51,9 +51,9 @@ namespace MyPractice
             RacerTestProgram.TestProgram();
 
 
-            Console.WriteLine("Do111n1e!");
+            Console.WriteLine("Done!");
             Console.ReadLine();
-        }
+        }   
 
          
 
