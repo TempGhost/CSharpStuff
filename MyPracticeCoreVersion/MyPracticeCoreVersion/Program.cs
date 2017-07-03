@@ -20,6 +20,7 @@ namespace MyPractice
 
                 return value * 2;
             }
+
             public static double Square(double value)
             {
                 return value * value;
@@ -32,6 +33,7 @@ namespace MyPractice
         static void Main(string[] args)
         {
             //Func<double, double>[] DoubleOpWhitT = {MathOperations.MultiplyByTwo, MathOperations.Square};
+
             //DoubleOp[] operations = {MathOperations.MultiplyByTwo, MathOperations.Square};
             //string c = "fuck";
             //int Fuckint = 0;
@@ -47,7 +49,9 @@ namespace MyPractice
             int a = 1;
 
             RacerTestProgram.TestProgram();
-            Console.WriteLine("Done!");
+
+
+            Console.WriteLine("Do111n1e!");
             Console.ReadLine();
         }
 
