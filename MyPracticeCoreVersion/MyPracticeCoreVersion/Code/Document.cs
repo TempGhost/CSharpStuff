@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace MyPractice.Code
 {
-    public class Document
+    class Document
     {
         public string Title { get; set; }
         public string Content { get; set; }
-        public byte Priority { get; set; }
 
         public Document(string title, string content)
         {
@@ -18,9 +17,5 @@ namespace MyPractice.Code
             this.Content = content;
         }
 
-        public Document(string title, string content,byte priority) :this(title, content)
-        {
-            this.Priority = priority;
-        }
     }
 }
