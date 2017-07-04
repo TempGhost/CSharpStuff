@@ -18,6 +18,12 @@ namespace MyPractice.Code
             this.Content = content;
         }
 
+        /// <summary>
+        /// 拓展构造函数可定义优先级    
+        /// </summary>
+        /// <param name="title">标题</param>
+        /// <param name="content">正文</param>
+        /// <param name="priority">优先级</param>
         public Document(string title, string content,byte priority) :this(title, content)
         {
             this.Priority = priority;

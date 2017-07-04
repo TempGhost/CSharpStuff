@@ -44,11 +44,32 @@ namespace MyPractice
             //    ProcessAndDisplayNuimber(Do1ubleOpWhitT[i], 5.0);
             //}
             //Console.ReadLine(); 
-            int a = 1;
+            //int a = 1;
 
-            RacerTestProgram.TestProgram();
-            Console.WriteLine("Done!");
+            //RacerTestProgram.TestProgram();
+            //Console.WriteLine("Done!");
+            //Console.ReadLine();
+
+            LinkedList<string> lk =  new LinkedList<string>();
+            lk.AddLast(new LinkedListNode<string>("222222"));
+            lk.AddLast(new LinkedListNode<string>("aaaaa"));
+            LinkedListNode<string> newnode  = new LinkedListNode<string>("ddddd");
+            LinkedListNode<string> newnode2= new LinkedListNode<string>("ddddd");
+            lk.AddLast(newnode);
+            lk.AddFirst(new LinkedListNode<string>("aaaaa"));
+            lk.AddBefore(newnode,new LinkedListNode<string>("11111"));
+          //  lk.AddBefore(newnode2, new LinkedListNode<string>("22222"));
+            LinkedListNode<string> currnode = lk.First;
+        
+            do
+            {
+                Console.WriteLine(currnode.Value);
+                currnode = currnode.Next;
+            } while (currnode != null);
+
             Console.ReadLine();
+            Console.WriteLine( lk.First.Value);
+
         }
 
          
