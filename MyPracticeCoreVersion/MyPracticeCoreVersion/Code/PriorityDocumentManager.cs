@@ -39,6 +39,8 @@ namespace MyPractice.Code
             AddDocumentToPriorityNode(d,d.Priority);
        }
 
+         
+         /**********************************前方高能开始**************************************************/
         public void AddDocumentToPriorityNode(Document doc, int priority)
          {
 
@@ -59,6 +61,7 @@ namespace MyPractice.Code
                  else
                  {//若降完不在大于0 （实际情况应该是等于0）说明已经降无可降 当前优先级依然没有待处理文档 说明当前队列为空，加入到链表文档集合的最后一位
                      documentList.AddLast(doc);
+                     priorityNodes[priority] = documentList.Last; //设置优先级链表的指针
                  }
                  return;  //返回
              }
@@ -69,11 +72,11 @@ namespace MyPractice.Code
                  if (priority == doc.Priority)//判断若当前递减的优先级与文档的优先级相等 说明改文档优先级并未经历过降级 应放在文档所在优先级的最后一位
                  {
                      documentList.AddAfter(priorityNode,doc); //在链表中的最后插入一个待处理任务
-                     priorityNodes[doc.Priority] = priorityNode.Next; //一当前文档优先级为索引访问该元素，未知意义
+                     priorityNodes[doc.Priority] = priorityNode.Next; //一当前文档优先级为索引访问该元素，更新优先级链表指针
                     //怀疑在链表的世界中 a = b.next   a将自动将p指针指向b  那么同时b的指针n也指向a 那么 a  = b.next
                     //可能等 b.next = a;
                  }
-                 else//当文档优先级与当前递减的优先级不等  说明文档的优先级已经降到合适问题 应放在当前文档所有优先级的第一位
+                 else//当文档优先级与当前递减的优先级不等  说明文档的优先级已经降到合适位置 应放在当前文档所有优先级的第一位
                  {
                     //初始化链表元素
                      LinkedListNode<Document> firstPriorityNode= priorityNode;
@@ -81,13 +84,43 @@ namespace MyPractice.Code
                      while (firstPriorityNode.Previous!=null&& firstPriorityNode.Previous.Value.Priority==priorityNode.Value.Priority)
                      {
                         //这里妈妈的好复杂
+                        //2017-07-06 这里其实很简单逆向遍历链表节点 
+                        //当当前节点p属性不为空时（表示前面仍然有当处理的任务），切当前节点的上一个节点的优先级与当前文档任务优先级相等
+                       //指针移动到上指针指向的上一个元素
+                       //
                          firstPriorityNode = priorityNode.Previous;
                          priorityNode = firstPriorityNode;
                      }
-                     documentList.AddAfter(firstPriorityNode, doc);
-                     priorityNodes[doc.Priority] = firstPriorityNode.Previous;
+                    //当循环退出，priorityNode与firstPriorityNode 应该指向文档所属优先级的第一个链表元素
+                    documentList.AddBefore(firstPriorityNode, doc);//在这个链表元素的前面插入文档任务
+                     priorityNodes[doc.Priority] = firstPriorityNode.Previous; //以当前文档优先级未索引，获取链表元素，并将其设置为当前优先级的链表的最后一个元素的上一个元素
                  }
              }
-         } 
+         }
+        /**********************************前方高能结束**************************************************/
+        //总结
+        //其实documentList时所有待处理文档任务的集合，里面保护所有待处理问题，
+        //为了对这个链表集合实现按优先级排序插入，需要记录每个优先级节点的最后一个元素的位置
+        //而这个元素的位置使用链表元素集合 list<linkednode<T>> priorityNodes 来记录；
+        //当有待处理文档进来时，先判断优先级链表中对应优先级的链表元素指针是否存在，如不存在
+        //代表该优先级无待处理任务那么可以对文档做降优先级处理，因为在 没有1、2、3、4、5、6、7 优先级的文档任务时
+        //传入的文档优先级时1、2、3、4、5、6 都是没有意义的
+
+        public void DisplayAllNodes()
+        {
+            foreach (Document itemDocument in documentList)
+            {
+                Console.WriteLine("priority:{} ,tilte :{1}",itemDocument.Priority,itemDocument.Title);
+            }
+        }
+
+        public Document GetDocument()
+        {
+            Document currDocuemnt = documentList.First.Value;
+            documentList.RemoveFirst();;
+            return currDocuemnt;
+
+        }
+
     }
 }
