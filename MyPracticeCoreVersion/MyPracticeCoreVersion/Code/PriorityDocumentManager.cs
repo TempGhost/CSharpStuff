@@ -22,11 +22,17 @@ namespace MyPractice.Code
          {
             //执行链表的构造函数
             documentList = new LinkedList<Document>();
+            priorityNodes = new List<LinkedListNode<Document>>(10);
              for (int i = 0; i < 10; i++)
              {
                 //循环0-9  为链表集合添加10个空的链表元素    
+                 
                 priorityNodes.Add(new LinkedListNode<Document>(null));
              }
+        }
+
+        public int  Length {
+            get { return documentList.Count; }
         }
 
         public void AddDocument(Document d)
@@ -37,11 +43,12 @@ namespace MyPractice.Code
             } 
             //若传入文档不为空 执行将文档添加的链表中的函数
             AddDocumentToPriorityNode(d,d.Priority);
+
        }
 
          
          /**********************************前方高能开始**************************************************/
-        public void AddDocumentToPriorityNode(Document doc, int priority)
+        private void AddDocumentToPriorityNode(Document doc, int priority)
          {
 
             //判断优先级 文档的优先级不能大于9不能小于0
@@ -54,14 +61,14 @@ namespace MyPractice.Code
              {
                 //若无 降低当前文档优先级
                  --priority; 
-                 if (priority > 0)//若降完仍然大于0 说明还可再降 加入到下轮
+                 if (priority >= 0)//若降完仍然大于等于0 说明还可再降 加入到下轮
                  {
                      AddDocumentToPriorityNode(doc, priority);
                  }
                  else
-                 {//若降完不在大于0 （实际情况应该是等于0）说明已经降无可降 当前优先级依然没有待处理文档 说明当前队列为空，加入到链表文档集合的最后一位
+                 {//若降完不在a （实际情况应该是等于-1）说明已经降无可降 当前优先级依然没有待处理文档 说明当前队列为空，加入到链表文档集合的最后一位
                      documentList.AddLast(doc);
-                     priorityNodes[priority] = documentList.Last; //设置优先级链表的指针
+                     priorityNodes[doc.Priority] = documentList.Last; //设置优先级链表的指针
                  }
                  return;  //返回
              }
@@ -110,7 +117,7 @@ namespace MyPractice.Code
         {
             foreach (Document itemDocument in documentList)
             {
-                Console.WriteLine("priority:{} ,tilte :{1}",itemDocument.Priority,itemDocument.Title);
+                Console.WriteLine("priority:{0} ,tilte :{1},content:{2}",itemDocument.Priority,itemDocument.Title,itemDocument.Content);
             }
         }
 

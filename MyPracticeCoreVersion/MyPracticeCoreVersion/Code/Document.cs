@@ -18,6 +18,10 @@ namespace MyPractice.Code
             this.Content = content;
         }
 
+        public Document()
+        {
+        }
+
         /// <summary>
         /// 拓展构造函数可定义优先级    
         /// </summary>

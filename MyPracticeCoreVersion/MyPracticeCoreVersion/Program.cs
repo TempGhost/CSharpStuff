@@ -49,27 +49,25 @@ namespace MyPractice
             //RacerTestProgram.TestProgram();
             //Console.WriteLine("Done!");
             //Console.ReadLine();
-
-            LinkedList<string> lk =  new LinkedList<string>();
-            lk.AddLast(new LinkedListNode<string>("222222"));
-            lk.AddLast(new LinkedListNode<string>("aaaaa"));
-            LinkedListNode<string> newnode  = new LinkedListNode<string>("ddddd");
-            LinkedListNode<string> newnode2= new LinkedListNode<string>("ddddd");
-            lk.AddLast(newnode);
-            lk.AddFirst(new LinkedListNode<string>("aaaaa"));
-            lk.AddBefore(newnode,new LinkedListNode<string>("11111"));
-          //  lk.AddBefore(newnode2, new LinkedListNode<string>("22222"));
-            LinkedListNode<string> currnode = lk.First;
-        
-            do
+            PriorityDocumentManager  pdm = new PriorityDocumentManager();
+            pdm.AddDocument(new Document("im 7p doc", "7p", 7));
+            pdm.AddDocument(new Document("im 1p doc", "1p", 1));
+            pdm.AddDocument( new Document("im 7p doc" ,"7p2",7));
+            pdm.AddDocument(new Document("im 7p doc", "7p1", 7));
+            pdm.AddDocument(new Document("im 9p doc", "9p", 9));
+            pdm.AddDocument(new Document("im 1p doc", "1p", 1));
+            pdm.AddDocument(new Document("im 7p doc", "7p", 7));
+            pdm.AddDocument(new Document("im 8p doc", "8p", 8));
+            pdm.DisplayAllNodes();
+            Console.ReadLine();
+            int length = pdm.Length;
+            for (int i = 0; i < length; i++)
             {
-                Console.WriteLine(currnode.Value);
-                currnode = currnode.Next;
-            } while (currnode != null);
+                Document itemDocument = pdm.GetDocument();
+                Console.WriteLine("priority:{0} ,tilte :{1},content:{2}", itemDocument.Priority, itemDocument.Title, itemDocument.Content);
+            }
 
             Console.ReadLine();
-            Console.WriteLine( lk.First.Value);
-
         }
 
          
