@@ -72,7 +72,36 @@ namespace MyPractice
             /**********************************************linkedtable test *****************************************/
 
             /**********************************************Dictionary test *****************************************/
+            
+            var employees = new Dictionary<EmployeeId, Employee>(31);
+           var idtony   = new EmployeeId("E1234");
+            var tony = new Employee(idtony,"tony",100);
 
+
+            var idjson = new EmployeeId("E1235");
+            var json = new Employee(idjson , "json", 100);
+            employees.Add(idtony,tony);
+            employees.Add(idjson,json);
+            while ( true)
+            {
+                string input = Console.ReadLine();
+                if (input != "X")
+                {
+                    Employee curEmployee = null;
+                    if (employees.TryGetValue(new EmployeeId(input), out curEmployee))
+                    {
+                        Console.WriteLine(curEmployee.ToString());
+                    }
+                    else
+                    {
+                        Console.WriteLine("obj not found!");
+                    }
+                }
+                else
+                { 
+                    break;
+                } 
+            }
 
         }
 
@@ -102,47 +131,47 @@ namespace MyPractice
             }
         }
 
-        class Employee
-        {
-            public string Name { get; set; }
+        //class Employee
+        //{
+        //    public string Name { get; set; }
 
-            public decimal Salary
-            {
-                get; set;
+        //    public decimal Salary
+        //    {
+        //        get; set;
                 
-            }
+        //    }
 
-            public Employee(string name, decimal salary)
-            {
-                this.Name = name;
-                this.Salary = salary;
-            }
+        //    public Employee(string name, decimal salary)
+        //    {
+        //        this.Name = name;
+        //        this.Salary = salary;
+        //    }
 
-            public override string ToString()
-            {
-                return string.Format("{0},{1:C}", Name, Salary);
+        //    public override string ToString()
+        //    {
+        //        return string.Format("{0},{1:C}", Name, Salary);
 
-            }
+        //    }
 
-            public static bool CompareSalary(Employee e1, Employee e2)
-            {
-                return e1.Salary < e2.Salary;
-            }
+        //    public static bool CompareSalary(Employee e1, Employee e2)
+        //    {
+        //        return e1.Salary < e2.Salary;
+        //    }
              
 
-        }
-        static void ProcessAndDisplayNuimber(Func< double, double> action,double value)
-        {
-            double result = action(value);
-            Console.WriteLine("Value is {0},result is {1}",value,result);
-        }
+        //}
+        //static void ProcessAndDisplayNuimber(Func< double, double> action,double value)
+        //{
+        //    double result = action(value);
+        //    Console.WriteLine("Value is {0},result is {1}",value,result);
+        //}
        
-        static void ProcessAndDisplayNumber(DoubleOp action, double value)
-        {
-            double result = action(value);
-            Console.WriteLine("Value is {0}, result of operationrs is {1}",value,result);
+        //static void ProcessAndDisplayNumber(DoubleOp action, double value)
+        //{
+        //    double result = action(value);
+        //    Console.WriteLine("Value is {0}, result of operationrs is {1}",value,result);
 
-        }
+        //}
 
 
     

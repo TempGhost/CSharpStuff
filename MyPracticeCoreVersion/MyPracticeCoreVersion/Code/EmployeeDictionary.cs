@@ -87,7 +87,7 @@ namespace MyPractice.Code
 
         public override string ToString()
         {
-            return string.Format("{0}:{1,20}    {2：C}", id.ToString(), name, salary);
+            return string.Format("{0}:{1,20}    {2:C}", id.ToString(), name, salary);
         }
     }
 }
