@@ -31,6 +31,7 @@ namespace MyPractice
 
         static void Main(string[] args)
         {
+            /**********************************************lamda test *****************************************/
             //Func<double, double>[] DoubleOpWhitT = {MathOperations.MultiplyByTwo, MathOperations.Square};
             //DoubleOp[] operations = {MathOperations.MultiplyByTwo, MathOperations.Square};
             //string c = "fuck";
@@ -45,34 +46,39 @@ namespace MyPractice
             //}
             //Console.ReadLine(); 
             //int a = 1;
-
+            /**********************************************lamda test *****************************************/
+            /**********************************************linkedtable test *****************************************/
             //RacerTestProgram.TestProgram();
             //Console.WriteLine("Done!");
             //Console.ReadLine();
-            PriorityDocumentManager  pdm = new PriorityDocumentManager();
-            pdm.AddDocument(new Document("im 7p doc", "7p", 7));
-            pdm.AddDocument(new Document("im 1p doc", "1p", 1));
-            pdm.AddDocument( new Document("im 7p doc" ,"7p2",7));
-            pdm.AddDocument(new Document("im 7p doc", "7p1", 7));
-            pdm.AddDocument(new Document("im 9p doc", "9p", 9));
-            pdm.AddDocument(new Document("im 1p doc", "1p", 1));
-            pdm.AddDocument(new Document("im 7p doc", "7p", 7));
-            pdm.AddDocument(new Document("im 8p doc", "8p", 8));
-            pdm.DisplayAllNodes();
-            Console.ReadLine();
-            int length = pdm.Length;
-            for (int i = 0; i < length; i++)
-            {
-                Document itemDocument = pdm.GetDocument();
-                Console.WriteLine("priority:{0} ,tilte :{1},content:{2}", itemDocument.Priority, itemDocument.Title, itemDocument.Content);
-            }
+            //PriorityDocumentManager  pdm = new PriorityDocumentManager();
+            //pdm.AddDocument(new Document("im 7p doc", "7p", 7));
+            //pdm.AddDocument(new Document("im 1p doc", "1p", 1));
+            //pdm.AddDocument( new Document("im 7p doc" ,"7p2",7));
+            //pdm.AddDocument(new Document("im 7p doc", "7p1", 7));
+            //pdm.AddDocument(new Document("im 9p doc", "9p", 9));
+            //pdm.AddDocument(new Document("im 1p doc", "1p", 1));
+            //pdm.AddDocument(new Document("im 7p doc", "7p", 7));
+            //pdm.AddDocument(new Document("im 8p doc", "8p", 8));
+            //pdm.DisplayAllNodes();
+            //Console.ReadLine();
+            //int length = pdm.Length;
+            //for (int i = 0; i < length; i++)
+            //{
+            //    Document itemDocument = pdm.GetDocument();
+            //    Console.WriteLine("priority:{0} ,tilte :{1},content:{2}", itemDocument.Priority, itemDocument.Title, itemDocument.Content);
+            //}
+            //Console.ReadLine();
+            /**********************************************linkedtable test *****************************************/
 
-            Console.ReadLine();
+            /**********************************************Dictionary test *****************************************/
+
+
         }
 
-         
 
-         
+
+
         class BubbleSorter {
             public static void Sort<T>(IList<T> SortArray, Func<T, T, bool> comparison)
             {
