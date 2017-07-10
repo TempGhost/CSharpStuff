@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MyPractice.Code;
+using MyPracticeCoreVersion.Code.pipeline;
 
 
 namespace MyPractice
@@ -31,6 +33,7 @@ namespace MyPractice
 
         static void Main(string[] args)
         {
+            #region lamda表达式练习代码
             /**********************************************lamda test *****************************************/
             //Func<double, double>[] DoubleOpWhitT = {MathOperations.MultiplyByTwo, MathOperations.Square};
             //DoubleOp[] operations = {MathOperations.MultiplyByTwo, MathOperations.Square};
@@ -47,6 +50,8 @@ namespace MyPractice
             //Console.ReadLine(); 
             //int a = 1;
             /**********************************************lamda test *****************************************/
+            #endregion
+            #region 链表练习代码
             /**********************************************linkedtable test *****************************************/
             //RacerTestProgram.TestProgram();
             //Console.WriteLine("Done!");
@@ -70,38 +75,75 @@ namespace MyPractice
             //}
             //Console.ReadLine();
             /**********************************************linkedtable test *****************************************/
-
+            #endregion
+            #region 字典类练习代码1 
             /**********************************************Dictionary test *****************************************/
-            
-            var employees = new Dictionary<EmployeeId, Employee>(31);
-           var idtony   = new EmployeeId("E1234");
-            var tony = new Employee(idtony,"tony",100);
+
+            // var employees = new Dictionary<EmployeeId, Employee>(31);
+            //var idtony   = new EmployeeId("E1234");
+            // var tony = new Employee(idtony,"tony",100);
 
 
-            var idjson = new EmployeeId("E1235");
-            var json = new Employee(idjson , "json", 100);
-            employees.Add(idtony,tony);
-            employees.Add(idjson,json);
-            while ( true)
-            {
-                string input = Console.ReadLine();
-                if (input != "X")
-                {
-                    Employee curEmployee = null;
-                    if (employees.TryGetValue(new EmployeeId(input), out curEmployee))
-                    {
-                        Console.WriteLine(curEmployee.ToString());
-                    }
-                    else
-                    {
-                        Console.WriteLine("obj not found!");
-                    }
-                }
-                else
-                { 
-                    break;
-                } 
-            }
+            // var idjson = new EmployeeId("E1235");
+            // var json = new Employee(idjson , "json", 100);
+            // employees.Add(idtony,tony);
+            // employees.Add(idjson,json);
+            // while ( true)
+            // {
+            //     string input = Console.ReadLine();
+            //     if (input != "X")
+            //     {
+            //         Employee curEmployee = null;
+            //         if (employees.TryGetValue(new EmployeeId(input), out curEmployee))
+            //         {
+            //             Console.WriteLine(curEmployee.ToString());
+            //         }
+            //         else
+            //         {
+            //             Console.WriteLine("obj not found!");
+            //         }
+            //     }
+            //     else
+            //     { 
+            //         break;
+            //     } 
+            // }
+            #endregion
+            #region  字典类练习代码
+
+            /**************************************************************************************************/
+            // Racer chinarRacer = new Racer(1, "china", "中国", "选手");
+            // Racer UsaRacer = new Racer(2, "USA", "美国", "选手");
+            // Racer chinar2Racer = new Racer(3, "china", "中国", "选手2");
+
+
+            // List<Racer>  racers= new List<Racer> { 
+            //      chinar2Racer,chinarRacer,UsaRacer
+            //};
+            //  var lookuparr  = racers.ToLookup(r => r.Country);
+            // foreach (Racer itemRacer in lookuparr["选手"])
+            // { 
+            //     Console.WriteLine(itemRacer.FirstName);
+            // }
+            // Console.ReadLine();
+            /**************************************************************************************************/
+            #endregion
+
+
+            #region 并发集合与管道练习代码
+            var fileNames = new BlockingCollection<string>();
+           var lines  = new BlockingCollection<string>(); 
+             var words = new ConcurrentDictionary<string,int>();
+            var items = new BlockingCollection<Info>();
+            var colorItems = new BlockingCollection<Info>();
+            Task t1 = PipelineStages.ReadFilenamesAsync(@"../../..",fileNames);
+            ConsoleHelper.WriteLine("started stage 1 ");
+            Task t2 = PipelineStages.LoadContentAsync(fileNames,lines);
+
+
+
+
+            #endregion
 
         }
 
