@@ -1,4 +1,4 @@
-﻿namespace MyPractice.Code
+﻿namespace MyPracticeCoreVersion.Code
 {
 
     public class Info
