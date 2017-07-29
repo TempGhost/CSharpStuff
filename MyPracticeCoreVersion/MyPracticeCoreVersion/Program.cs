@@ -4,14 +4,17 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using DataLib;
 using MyPractice.Code;
 using MyPracticeCoreVersion.Code;
 using MyPracticeCoreVersion.Code.pipeline;
+
 
 
 namespace MyPractice
@@ -218,68 +221,172 @@ namespace MyPractice
             //    select s)
             //{
             //}
+            //join连接
+            //var races2 = from r in Formula1.GetChampions() //linq 表达式 查询返回新的匿名对象集合
+            //    from y in r.Years //from 子句 当对象的属性本身又是集合 使用from子句可降维
+            //    select new //如二维对象  racer: {name: jack ,championyear :[2017,2016,2015]}
+            //    {
+            //        //可降为  name:jack ,championyear:2017 
+            //        Year = y, // name:jack,championyear:2016
+            //        Name = r.FirstName //name:jack,championyear:2015 三条记录
+            //    };
+            //var teams = from t in Formula1.GetContructorChampions() //作用同上
+            //    from y in t.Years
+            //    select new
+            //    {
+            //        Year = y,
+            //        Name = t.Name,
+            //    };
+            // //linq   join 查询
+            // //和将两个集合通过某种个字段/属性连接起来
+            // //返回一个新的匿名对象集合
+            //var racersAndTeams = (from r in races2  
+            //    join t in teams on r.Year equals t.Year
+            //    select new {r.Year, Champion = r.Name, Constructor = t.Name}).OrderBy(
+            //    x => x.Year).Take(10);
+            //Console.WriteLine("Year Wrold Champion\t Constructor Title");
+            //foreach (var item in racersAndTeams)
+            //{
+            //    Console.WriteLine("{0} :{1,-20} ,{2}", item.Year, item.Champion, item.Constructor);
+            //}
+
+            //Console.WriteLine("--------------------------------------------------------------------------------------");
+
+            ////合并join 语句版本
+            //var racersAndTeamsNew = (
+            //    from r in from r1 in Formula1.GetChampions() //这里开始
+            //    from yr in //这里是为了将对象降维
+            //    r1.Years
+            //    select new
+            //    {
+            //        Year = yr,
+            //        Name = r1.FirstName
+            //    }  //这里结束 是集合一
+            //    join t in from t1 in Formula1.GetContructorChampions() // 这里开始
+            //    from yr in t1.Years //同样 降维
+            //    select new
+            //    {
+            //        Year = yr,
+            //        Name = t1.Name
+            //    }//这里结束 是集合2
+            //    on r.Year equals t.Year //连接凭据 func <t1,t2,bool>
+            //    select new {Year = r.Year, Racer = r.Name, Team = t.Name}).Take(10);
+
+            //foreach (var item in racersAndTeamsNew)
+            //{
+            //    Console.WriteLine("{0} :{1,-20} ,{2}", item.Year, item.Racer, item.Team);
+            //}
+
+            //左连接
+            #region 尝试一段过
+            var racersLeftJoinTeams = (
+                from raceslist in from r in Formula1.GetChampions()
+                                  from r1 in r.Years
+                                  select new { Name = r.FirstName, Year = r1 }
+                join teamlist in from t1 in Formula1.GetContructorChampions() // 这里开始
+                                 from yr in t1.Years //同样 降维
+                                 select new
+                                 {
+                                     Year = yr,
+                                     TeamName = t1.Name
+                                 } //这里结束 是集合2
+                on raceslist.Year equals teamlist.Year
+                 into resultlist
+                 from result in resultlist.DefaultIfEmpty()
+                select new
+                {
+                    Name = raceslist.Name,
+                    TeamName = result == null? "fuck ":result.TeamName,
+                    Year   =  raceslist.Year
+                }
+                 );
+            #endregion
+
             var races2 = from r in Formula1.GetChampions() //linq 表达式 查询返回新的匿名对象集合
-                from y in r.Years //from 子句 当对象的属性本身又是集合 使用from子句可降维
-                select new //如二维对象  racer: {name: jack ,championyear :[2017,2016,2015]}
-                {
-                    //可降为  name:jack ,championyear:2017 
-                    Year = y, // name:jack,championyear:2016
-                    Name = r.FirstName //name:jack,championyear:2015 三条记录
-                };
+                         from y in r.Years //from 子句 当对象的属性本身又是集合 使用from子句可降维
+                         select new //如二维对象  racer: {name: jack ,championyear :[2017,2016,2015]}
+                         {
+                             //可降为  name:jack ,championyear:2017 
+                             Year = y, // name:jack,championyear:2016
+                             Name = r.FirstName //name:jack,championyear:2015 三条记录
+                         };
             var teams = from t in Formula1.GetContructorChampions() //作用同上
-                from y in t.Years
-                select new
-                {
-                    Year = y,
-                    Name = t.Name,
-                };
-             //linq   join 查询
-             //和将两个集合通过某种个字段/属性连接起来
-             //返回一个新的匿名对象集合
-            var racersAndTeams = (from r in races2  
-                join t in teams on r.Year equals t.Year
-                select new {r.Year, Champion = r.Name, Constructor = t.Name}).OrderBy(
-                x => x.Year).Take(10);
-            Console.WriteLine("Year Wrold Champion\t Constructor Title");
-            foreach (var item in racersAndTeams)
-            {
-                Console.WriteLine("{0} :{1,-20} ,{2}", item.Year, item.Champion, item.Constructor);
-            }
-             
-            Console.WriteLine("--------------------------------------------------------------------------------------");
+                        from y in t.Years
+                        select new
+                        {
+                            Year = y,
+                            Name = t.Name,
+                        };
+            Expression<Func<int, int, bool>> methodA = (a, b) =>  a+b > 10 ;
+            //Linq.DisPlayTree(0,"lambda",methodA);
+            //Console.ReadLine();
+            //linq join 查询
+            //和将两个集合通过某个字段 / 属性连接起来
+            //返回一个新的匿名对象集合
+            //var racersLeftJoinTeams = (from r in races2
+            //                           join t in teams on r.Year equals t.Year
+            //                            into resultlist
+            //                           from result in resultlist.DefaultIfEmpty()
+            //                           select new
+            //                           {
+            //                               Year = r.Year,
+            //                               Name =r.Name,
+            //                               Contructor = result == null ? "没有匹配的记录": result.Name
+            //                           }).OrderBy(
+            //    x => x.Year).Take(10);
+            //Console.WriteLine("Year Wrold Champion\t Constructor Title"); 
+            //foreach (var item in racersLeftJoinTeams)
+            //{
+            //    Console.WriteLine("{0} :{1,-20} ,{2}", item.Year, item.Name, item.TeamName);
+            //}
 
-            //合并join 语句版本
-            var racersAndTeamsNew = (
-                from r in from r1 in Formula1.GetChampions() //这里开始
-                from yr in //这里是为了将对象降维
-                r1.Years
-                select new
-                {
-                    Year = yr,
-                    Name = r1.FirstName
-                }  //这里结束 是集合一
-                join t in from t1 in Formula1.GetContructorChampions() // 这里开始
-                from yr in t1.Years //同样 降维
-                select new
-                {
-                    Year = yr,
-                    Name = t1.Name
-                }//这里结束 是集合2
-                on r.Year equals t.Year //连接凭据 func <t1,t2,bool>
-                select new {Year = r.Year, Racer = r.Name, Team = t.Name}).Take(10);
-
-            foreach (var item in racersAndTeamsNew)
+            #region Parallel 练习代码 
+           // //代码1
+           // Parallel.ForEach(racersLeftJoinTeams, item =>
+           // {
+           //     Console.WriteLine("{0} :{1,-20} ,{2}", item.Year, item.Name, item.TeamName);
+           // });
+           // Console.WriteLine("-----------------------------------------------------------------------------------------------------");
+           // //代码2 
+           //Parallel.ForEach(racersLeftJoinTeams, item =>
+           // {
+           //     Console.WriteLine("{0} :{1,-20} ,{2}", item.Year, item.Name, item.TeamName);
+           // });
+            //代码1和代码2 完全相关，但输入元素的输出的顺序不一定相同 这表明Parallel.ForEach() 是多线程的
+            ParallelLoopResult Pararesult = Parallel.For(0, 10, async (i,a)=>
             {
-                Console.WriteLine("{0} :{1,-20} ,{2}", item.Year, item.Racer, item.Team);
-            }
+                Console.WriteLine("{0},task{1},thread{2}",i,Task.CurrentId,Thread.CurrentThread.ManagedThreadId);
+                await Task.Delay(200);
+                Console.WriteLine("{0},task{1},thread{2}", i, Task.CurrentId, Thread.CurrentThread.ManagedThreadId);
+              //Console.WriteLine(a.IsStopped);
+            });
+            Console.WriteLine("{0}", Pararesult.IsCompleted);
+            #endregion
+            
+
 
             #endregion
 
+            dosomething(100000)
+                ;
+             dosomething(100000)
+                ;
             Console.ReadLine();
         }
 
 
+        public static async void  dosomething(int input)
+        {
+             Parallel.For(0,input, x =>
+            {
+                Console.WriteLine(x.ToString());
+            });
+        }
 
+        public static string dosome2()
+        {
+            return "aaa";
+        }
 
         class BubbleSorter {
             public static void Sort<T>(IList<T> SortArray, Func<T, T, bool> comparison)
