@@ -5,6 +5,7 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Http.Headers;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,16 +15,20 @@ using DataLib;
 using MyPractice.Code;
 using MyPracticeCoreVersion.Code;
 using MyPracticeCoreVersion.Code.pipeline;
+using System.Diagnostics.Tracing;
 
 
 
 namespace MyPractice
 { 
+
+
     class Program
     {
 
         class  MathOperations
         {
+
             public static double MultiplyByTwo(double value)
             {
 
@@ -37,10 +42,43 @@ namespace MyPractice
         private delegate string GetAString();
 
         delegate double DoubleOp(double value);
+        static object _taskMethoLock = new object();
+
+        static void TaskMethod(object title)
+        {
+            lock (_taskMethoLock)
+            {
+                Console.WriteLine(title);
+                Console.WriteLine("Task{0},Thread{1}",Task.CurrentId == null?"no task":Task.CurrentId.ToString(),
+                    Thread.CurrentThread.ManagedThreadId);
+               Console.WriteLine("is thread background thread {0}",Thread.CurrentThread.IsBackground);
+                Console.WriteLine();
+            }
+        }
+
+        static void TaskUsingThreadPool()
+        {
+            //创建线程的4种方式
+            //方式1实例化任务工厂类  创建线程 
+            var tf = new TaskFactory();
+            Task t1 = tf.StartNew(TaskMethod,
+                "using TaskFactory"); //使用 StartNew 方法 创建一个线程 （methodname,param1,param2....）
+            //方式一结束
+            //方式二 使用静态类task中StartNewStartNew 创建线程
+
+            Task t2 = Task.Factory.StartNew(TaskMethod, "Factoty via a task");
+            //方式二结束
+            //方式3 实例化线程 并且调用
+            var t3 = new Task(TaskMethod, "using a task constructor and Start ");
+            t3.Start();
+            // 方式4 使用lambda 表达式创建task 实例
+            Task t4 = Task.Run(() => TaskMethod("using thr rum method"));
+        }
 
         static void Main(string[] args)
         {
             #region lamda表达式练习代码
+
             /**********************************************lamda test *****************************************/
             //Func<double, double>[] DoubleOpWhitT = {MathOperations.MultiplyByTwo, MathOperations.Square};
             //DoubleOp[] operations = {MathOperations.MultiplyByTwo, MathOperations.Square};
@@ -57,8 +95,11 @@ namespace MyPractice
             //Console.ReadLine(); 
             //int a = 1;
             /**********************************************lamda test *****************************************/
+
             #endregion
+
             #region 链表练习代码
+
             /**********************************************linkedtable test *****************************************/
             //RacerTestProgram.TestProgram();
             //Console.WriteLine("Done!");
@@ -82,8 +123,11 @@ namespace MyPractice
             //}
             //Console.ReadLine();
             /**********************************************linkedtable test *****************************************/
+
             #endregion
+
             #region 字典类练习代码1 
+
             /**********************************************Dictionary test *****************************************/
 
             // var employees = new Dictionary<EmployeeId, Employee>(31);
@@ -115,6 +159,7 @@ namespace MyPractice
             //         break;
             //     } 
             // }
+
             #endregion
 
             #region  字典类练习代码
@@ -135,8 +180,8 @@ namespace MyPractice
             // }
             // Console.ReadLine();
             /**************************************************************************************************/
-            #endregion
 
+            #endregion
             #region 并发集合与管道练习代码
             ///*管道模型练习代码
             // 代码实现功能：遍历制定目录文件夹 下所 指定文件
@@ -279,45 +324,45 @@ namespace MyPractice
 
             //左连接
             #region 尝试一段过
-            var racersLeftJoinTeams = (
-                from raceslist in from r in Formula1.GetChampions()
-                                  from r1 in r.Years
-                                  select new { Name = r.FirstName, Year = r1 }
-                join teamlist in from t1 in Formula1.GetContructorChampions() // 这里开始
-                                 from yr in t1.Years //同样 降维
-                                 select new
-                                 {
-                                     Year = yr,
-                                     TeamName = t1.Name
-                                 } //这里结束 是集合2
-                on raceslist.Year equals teamlist.Year
-                 into resultlist
-                 from result in resultlist.DefaultIfEmpty()
-                select new
-                {
-                    Name = raceslist.Name,
-                    TeamName = result == null? "fuck ":result.TeamName,
-                    Year   =  raceslist.Year
-                }
-                 );
+            //var racersLeftJoinTeams = (
+            //    from raceslist in from r in Formula1.GetChampions()
+            //                      from r1 in r.Years
+            //                      select new { Name = r.FirstName, Year = r1 }
+            //    join teamlist in from t1 in Formula1.GetContructorChampions() // 这里开始
+            //                     from yr in t1.Years //同样 降维
+            //                     select new
+            //                     {
+            //                         Year = yr,
+            //                         TeamName = t1.Name
+            //                     } //这里结束 是集合2
+            //    on raceslist.Year equals teamlist.Year
+            //     into resultlist
+            //     from result in resultlist.DefaultIfEmpty()
+            //    select new
+            //    {
+            //        Name = raceslist.Name,
+            //        TeamName = result == null? "fuck ":result.TeamName,
+            //        Year   =  raceslist.Year
+            //    }
+            //     );
             #endregion
 
-            var races2 = from r in Formula1.GetChampions() //linq 表达式 查询返回新的匿名对象集合
-                         from y in r.Years //from 子句 当对象的属性本身又是集合 使用from子句可降维
-                         select new //如二维对象  racer: {name: jack ,championyear :[2017,2016,2015]}
-                         {
-                             //可降为  name:jack ,championyear:2017 
-                             Year = y, // name:jack,championyear:2016
-                             Name = r.FirstName //name:jack,championyear:2015 三条记录
-                         };
-            var teams = from t in Formula1.GetContructorChampions() //作用同上
-                        from y in t.Years
-                        select new
-                        {
-                            Year = y,
-                            Name = t.Name,
-                        };
-            Expression<Func<int, int, bool>> methodA = (a, b) =>  a+b > 10 ;
+            //var races2 = from r in Formula1.GetChampions() //linq 表达式 查询返回新的匿名对象集合
+            //             from y in r.Years //from 子句 当对象的属性本身又是集合 使用from子句可降维
+            //             select new //如二维对象  racer: {name: jack ,championyear :[2017,2016,2015]}
+            //             {
+            //                 //可降为  name:jack ,championyear:2017 
+            //                 Year = y, // name:jack,championyear:2016
+            //                 Name = r.FirstName //name:jack,championyear:2015 三条记录
+            //             };
+            //var teams = from t in Formula1.GetContructorChampions() //作用同上
+            //            from y in t.Years
+            //            select new
+            //            {
+            //                Year = y,
+            //                Name = t.Name,
+            //            };
+            //Expression<Func<int, int, bool>> methodA = (a, b) =>  a+b > 10 ;
             //Linq.DisPlayTree(0,"lambda",methodA);
             //Console.ReadLine();
             //linq join 查询
@@ -353,25 +398,162 @@ namespace MyPractice
            //     Console.WriteLine("{0} :{1,-20} ,{2}", item.Year, item.Name, item.TeamName);
            // });
             //代码1和代码2 完全相关，但输入元素的输出的顺序不一定相同 这表明Parallel.ForEach() 是多线程的
-            ParallelLoopResult Pararesult = Parallel.For(0, 10, async (i,a)=>
-            {
-                Console.WriteLine("{0},task{1},thread{2}",i,Task.CurrentId,Thread.CurrentThread.ManagedThreadId);
-                await Task.Delay(200);
-                Console.WriteLine("{0},task{1},thread{2}", i, Task.CurrentId, Thread.CurrentThread.ManagedThreadId);
-              //Console.WriteLine(a.IsStopped);
-            });
-            Console.WriteLine("{0}", Pararesult.IsCompleted);
+            //ParallelLoopResult Pararesult = Parallel.For(0, 10, async (i,a)=>
+            //{
+            //    Console.WriteLine("{0},task{1},thread{2}",i,Task.CurrentId,Thread.CurrentThread.ManagedThreadId);
+            //    await Task.Delay(200);
+            //    Console.WriteLine("{0},task{1},thread{2}", i, Task.CurrentId, Thread.CurrentThread.ManagedThreadId);
+            //  //Console.WriteLine(a.IsStopped);
+            //});
+            //Console.WriteLine("{0}", Pararesult.IsCompleted);
             #endregion
-            
-
-
+           
             #endregion
 
-            dosomething(100000)
-                ;
-             dosomething(100000)
-                ;
+            //dosomething(100000)
+            //    ;
+            // dosomething(100000)
+            //    ;
+            //Console.ReadLine(); 
+            //Parallel.Invoke( new Action[]{
+            //    () =>
+            //    {
+            //        for (int i = 0; i < 200; i++)
+            //        {
+            //            Console.WriteLine(i);
+            //            Thread.Sleep(10000);
+            //        }
+            //    }, () =>
+            //    {
+            //        for (int i = 200; i < 400; i++)
+            //        {
+            //            Console.WriteLine(i);
+            //            Thread.Sleep(10000);
+            //        }
+            //    }});
+            //Thread.Sleep(10000);
+            //Console.WriteLine("is been 10 s ");
+            //TaskUsingThreadPool(); 
+            //var t1 = new TaskFactory();
+            //t1.StartNew(a =>
+            //{
+            //    for (int i = 0; i < 10; i++)
+            //    {
+            //        Task.Delay(1000);
+            //        Console.WriteLine(i);
+            //    }
+            //},"aaaa",TaskCreationOptions.LongRunning); //所有创建线程的方法接受枚举类TaskCreationOptions中的成员作为参数
+            ////LongRunning表示该任务长期运行 线程管理器会为其单独建立线程 而不使用线程池中的线程
+            ////在Core版本中 Task 没有 ispoolthread 属性 未知原因
+
+
+            //Console.ReadLine();
+            //var cts = new  CancellationTokenSource();
+            //cts.Token.Register(() =>
+            //{
+            //    Console.WriteLine("Taskstop");
+            //});
+           
+            //Task.Run(() =>
+            //{
+            //    try
+            //    {
+            //        while (1 == 1)
+            //        {
+            //            CancellationToken ct = cts.Token;
+            //            if (ct.IsCancellationRequested)
+            //            {
+            //                ct.ThrowIfCancellationRequested();
+            //                break;
+            //            }
+            //            Console.WriteLine("runing");
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+                     
+            //    }
+            //    finally
+            //    {
+            //        Console.WriteLine("111111111");
+            //    }
+            //});
+            ////     Console.ReadLine();
+            //while (true)
+            //{
+            //    string input = Console.ReadLine();
+            //    if (input == "stop")
+            //    {
+            //        cts.Cancel();
+            //        break;
+            //    }
+            //}
+            //Console.ReadLine();
+
+            //中断任务练习代码
+            //var cts = new CancellationTokenSource();
+            //cts.Token.Register(() => { Console.WriteLine("throw'");});
+            //Task t1 =  Task.Run(() =>
+            //{
+            //    try
+            //    {
+            //      var chiledTask =  new Task(() =>
+            //    {
+            //        int i = 0;
+            //        while (true)
+            //        {
+            //            Console.WriteLine(++i);
+            //        }
+            //    });
+            //        chiledTask.Start();
+            //        Thread.Sleep(3000);
+            //        throw  new OperationCanceledException();
+            //      //  CancellationToken ct = cts.Token;
+                   
+            //        // chiledTask.Wait();
+
+            //    }
+            //    catch (Exception e)
+            //    {
+            //    }
+            //});
+            //while (t1.Status == TaskStatus.WaitingForChildrenToComplete)
+            //{ 
+            //     Console.WriteLine("Waiting");
+            //}
+             //取消架构练习代码
+             //在Parallel 中使用Cancel时已经启动的任务完继续完成
+             //而未启动的任务将会取消
+            //var cts  = new CancellationTokenSource( );
+            //cts.CancelAfter(3000);
+            //try
+            //{
+            //    Parallel.For(0, 100, new ParallelOptions()
+            //    {
+            //        CancellationToken = cts.Token
+            //    }, x =>
+            //    {
+            //        Console.WriteLine("loop {0} started", x);
+            //        int sum = 0;
+            //        for (int i = 0; i < 100; i++)
+            //        {
+            //            Thread.Sleep(2);
+            //            sum += i;
+            //        }
+            //        Console.WriteLine("loop {0} finnish", x);
+            //    });
+            //}
+            //catch (Exception ex)
+            // {
+            //     Console.WriteLine(ex.Message);
+            //}
+           
+               //线程池练习代码
+            int nWorkThreds;
+            int nCompletionPortThreads;
+        //     ThreadPool.GetMaxThreads
             Console.ReadLine();
+
         }
 
 
